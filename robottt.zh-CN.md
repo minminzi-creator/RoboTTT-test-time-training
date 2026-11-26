@@ -102,8 +102,8 @@ TTT 从隐藏特征生成 Q/K/V，内部目标为 `target = v - k`。快权重 M
 内目标可写为下面的形式，其中 K 已经应用 RoPE，V 未应用 RoPE。这个内目标用于计算快权重更新，并未作为另一个标量 loss 直接加到外层 Flow Matching loss 上。
 
 $$
-f_W(k)=\operatorname{GELU}(kW_1+b_1)W_2+b_2,\qquad
-\ell_{\mathrm{inner}}=\tfrac12\left\|\operatorname{LN}_{\gamma,\beta}(f_W(k))-(v-k)\right\|^2.
+f_W(k)=\mathrm{GELU}(kW_1+b_1)W_2+b_2,\qquad
+\ell_{\mathrm{inner}}=\tfrac12\left\|\mathrm{LN}_{\gamma,\beta}(f_W(k))-(v-k)\right\|^2.
 $$
 
 同一个 Anchor 内，各 token 的内梯度在同一份传入快权重上计算；下三角更新使第 i 个 query 读取包含自身的前缀更新，最后一行更新形成下一 Anchor 的 candidate。并非所有 query 都读取最终 candidate，也不是每处理一个 token 就用新权重重新计算下一个 token 的梯度。`NativeTTTBlock.forward()` 在 attention residual 之后加入 TTT residual，再进入 FFN。
@@ -166,7 +166,6 @@ reset 恢复的是可学习初始快权重，并将相应位置计数归零，�
 | 诊断        | [check_gr00t_native_memory.py](evaluations/check_gr00t_native_memory.py)                                                                                                                            | Memory 更新、传递和重置检查                      |
 | 性能采集      | [run_robottt3_profile.sh](examples/sft/run_robottt3_profile.sh)                                                                                                                                     | 独立采集入口，默认预览                            |
 | 短程验收      | [run_robottt3_acceptance.py](examples/sft/run_robottt3_acceptance.py)                                                                                                                               | 短程训练与保存恢复验收                            |
-| 历史材料      | [ROBOTTT3_DESIGN.md](ROBOTTT3_DESIGN.md)、[ROBOTTT3_PLAN.md](ROBOTTT3_PLAN.md)                                                                 | 当前入口与历史设计/验收记录；按日期区分                   |
 
 GR00T 的实际 Processor、DiT 和视觉语言 backbone 位于外部依赖，理解动作如何归一化、补齐和解码时也需要阅读它们。配置固定依赖 commit `23ace64f17aa5015259b8609d371eb61a357c776`。
 

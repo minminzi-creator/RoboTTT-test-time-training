@@ -102,8 +102,8 @@ TTT projects hidden features into Q/K/V and uses `target = v - k`. Reconstructio
 The inner objective has the following form, with RoPE applied to K but not V. It drives fast-weight updates and is not added as a separate scalar term to the outer Flow Matching loss.
 
 $$
-f_W(k)=\operatorname{GELU}(kW_1+b_1)W_2+b_2,\qquad
-\ell_{\mathrm{inner}}=\tfrac12\left\|\operatorname{LN}_{\gamma,\beta}(f_W(k))-(v-k)\right\|^2.
+f_W(k)=\mathrm{GELU}(kW_1+b_1)W_2+b_2,\qquad
+\ell_{\mathrm{inner}}=\tfrac12\left\|\mathrm{LN}_{\gamma,\beta}(f_W(k))-(v-k)\right\|^2.
 $$
 
 Within an anchor, inner gradients for all tokens are computed at the same incoming weights. The triangular update gives query i an inclusive-prefix readout, while the final update row forms the next anchor's candidate. Queries do not all read the final candidate, and gradients are not recomputed at newly updated weights after every token. `NativeTTTBlock.forward()` adds the TTT residual after the attention residual and before the FFN.
@@ -166,7 +166,6 @@ Beyond the primary reading path, the following files handle model assembly, dist
 | Diagnostics | [check_gr00t_native_memory.py][memory-check] | Check memory updates, carry, and reset |
 | Profiling | [run_robottt3_profile.sh][profile] | Isolated profiler launcher; preview by default |
 | Acceptance | [run_robottt3_acceptance.py][acceptance] | Short training and checkpoint-resume checks |
-| Historical records | [ROBOTTT3_DESIGN.md][design], [ROBOTTT3_PLAN.md][plan] | Current entry points and dated historical design/acceptance records |
 
 The actual GR00T Processor, DiT, and vision-language backbone live in the external dependency. Read them to understand action normalization, padding, and decoding. The configuration pins dependency commit `23ace64f17aa5015259b8609d371eb61a357c776`.
 
@@ -221,8 +220,6 @@ This is a source guide, not a new runtime acceptance report. Preparing this docu
 [memory-check]: evaluations/check_gr00t_native_memory.py
 [profile]: examples/sft/run_robottt3_profile.sh
 [acceptance]: examples/sft/run_robottt3_acceptance.py
-[design]: ROBOTTT3_DESIGN.md
-[plan]: ROBOTTT3_PLAN.md
 [upstream-model]: https://github.com/NVIDIA/Isaac-GR00T/blob/23ace64f17aa5015259b8609d371eb61a357c776/gr00t/model/gr00t_n1d7/gr00t_n1d7.py
 [processor]: https://github.com/NVIDIA/Isaac-GR00T/blob/23ace64f17aa5015259b8609d371eb61a357c776/gr00t/model/gr00t_n1d7/processing_gr00t_n1d7.py
 [dit]: https://github.com/NVIDIA/Isaac-GR00T/blob/23ace64f17aa5015259b8609d371eb61a357c776/gr00t/model/modules/dit.py
