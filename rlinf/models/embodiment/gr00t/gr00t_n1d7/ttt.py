@@ -2,7 +2,7 @@
 """Algorithm core for the recurrent fast-weight engine used by RoboTTT.
 
 This module is model-agnostic: it implements the differentiable mini-batch
-TTT-MLP and the functional recurrent state. 
+TTT-MLP and the functional recurrent state.
 
 Public building blocks:
 

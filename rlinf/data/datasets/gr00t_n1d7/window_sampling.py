@@ -39,7 +39,10 @@ class WindowSampler:
 
     def state_dict(self) -> dict:
         return {
-            "size": self.size, "seed": self.seed, "rank": self.rank, "world_size": self.world_size
+            "size": self.size,
+            "seed": self.seed,
+            "rank": self.rank,
+            "world_size": self.world_size,
         }
 
     def load_state_dict(self, state: dict) -> None:

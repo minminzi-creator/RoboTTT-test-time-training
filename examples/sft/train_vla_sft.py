@@ -36,6 +36,7 @@ def require_explicit_log_path(cfg) -> None:
             "Set runner.logger.log_path to an explicitly chosen output directory"
         )
 
+
 # hydra 默认加载配置 或者 运行时--config-name指定配置文件
 @hydra.main(
     version_base="1.1", config_path="config", config_name="maniskill_ppo_openvlaoft"

@@ -29,6 +29,7 @@ ACTION_KEYS = [
 ]
 LANGUAGE_KEY = "annotation.human.task_description"
 
+
 # dataset modality：视频、状态、动作、语言
 # delta_indices：时间步长索引 0表示当前时间步长
 # modality_keys：视频、状态、动作、语言的键
@@ -39,6 +40,7 @@ def modality_dict(horizon: int = 40) -> dict:
         "action": {"delta_indices": list(range(horizon)), "modality_keys": ACTION_KEYS},
         "language": {"delta_indices": [0], "modality_keys": [LANGUAGE_KEY]},
     }
+
 
 # random seed
 def sample_seed(seed: int, epoch: int, episode: int, purpose: int = 0) -> int:
